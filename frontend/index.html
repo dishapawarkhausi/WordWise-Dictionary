@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dictionary Bot | Your Smart Language Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4A90E2;
+            --secondary-color: #2C3E50;
+            --accent-color: #E74C3C;
+            --success-color: #2ECC71;
+            --warning-color: #F39C12;
+            --light-gray: #f8f9fa;
+            --dark-gray: #343a40;
+            --border-radius: 0.5rem;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--dark-gray);
+            background-color: var(--light-gray);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .app-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .app-title {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .app-subtitle {
+            font-size: 1rem;
+            color: #6c757d;
+        }
+
+        .search-box {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        }
+
+        .language-select {
+            padding: 0.75rem;
+            border-radius: var(--border-radius);
+            border: 2px solid #e2e8f0;
+            background-color: white;
+            font-size: 1rem;
+            min-width: 150px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .language-select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #357ABD;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #1A252F;
+            transform: translateY(-2px);
+        }
+
+        .btn-accent {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .btn-accent:hover {
+            background: #C0392B;
+            transform: translateY(-2px);
+        }
+
+        .mic-button {
+            background: var(--accent-color);
+            color: white;
+            padding: 0.75rem 1rem;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .mic-button:hover {
+            background: #C0392B;
+            transform: translateY(-2px);
+        }
+
+        .mic-button:disabled {
+            background: #e74c3c80;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .recording {
+            animation: pulse 1.5s infinite;
+            background: var(--warning-color);
+        }
+
+        .result-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--box-shadow);
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .word-title {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .phonetic {
+            font-size: 1.2rem;
+            color: #6c757d;
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+
+        .translation {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .definitions-container {
+            margin-top: 1.5rem;
+        }
+
+        .pos-container {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .pos-container:last-child {
+            border-bottom: none;
+        }
+
+        .pos-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .part-of-speech {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            text-transform: capitalize;
+        }
+
+        .definition-item {
+            margin-bottom: 1rem;
+            padding-left: 1rem;
+        }
+
+        .definition-text {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+
+        .example {
+            font-style: italic;
+            color: #6c757d;
+            margin-top: 0.5rem;
+            padding-left: 1rem;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .synonyms-container, .antonyms-container {
+            margin-top: 1.5rem;
+        }
+
+        .synonyms-title, .antonyms-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .tag {
+            background-color: #e2e8f0;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .tag:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+            border-left: 5px solid #f5c6cb;
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 2rem;
+            color: var(--primary-color);
+        }
+
+        .spinner {
+            border: 3px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 3px solid var(--primary-color);
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab.active {
+            border-bottom: 3px solid var(--primary-color);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .footer {
+            margin-top: 2rem;
+            text-align: center;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        optgroup {
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+            
+            .search-box {
+                flex-direction: column;
+            }
+            
+            .search-input, .language-select, .btn {
+                width: 100%;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+        }
+
+        .main-definition {
+            margin-bottom: 1rem;
+        }
+
+        .additional-definitions {
+            margin-top: 0.5rem;
+            margin-left: 1.5rem;
+            padding-left: 0.5rem;
+            border-left: 2px solid var(--primary-color);
+        }
+
+        .additional-header {
+            font-size: 0.95rem;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .additional-item {
+            display: flex;
+            margin-bottom: 0.75rem;
+            align-items: flex-start;
+        }
+
+        .bullet-point {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-right: 0.5rem;
+            line-height: 1.2;
+        }
+
+        .additional-text {
+            font-size: 1rem;
+            line-height: 1.5;
+            flex: 1;
+        }
+
+        .additional-example {
+            font-style: italic;
+            color: #6c757d;
+            margin-top: 0.25rem;
+            margin-left: 1.5rem;
+            font-size: 0.9rem;
+            padding-left: 0.5rem;
+            border-left: 2px solid var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="app-header">
+            <h1 class="app-title">
+                <i class="fas fa-book-open"></i> Dictionary Bot
+            </h1>
+            <p class="app-subtitle">Your smart language assistant for definitions, translations, and pronunciations</p>
+        </header>
+        
+        <div class="search-box">
+            <input type="text" id="word-input" class="search-input" placeholder="Enter a word or phrase...">
+            <select id="language-select" class="language-select">
+                <optgroup label="Popular Languages">
+                    <option value="en">English</option>
+                    <option value="es">Spanish</option>
+                    <option value="fr">French</option>
+                    <option value="de">German</option>
+                </optgroup>
+                <optgroup label="Indian Languages">
+                    <option value="hi">Hindi</option>
+                    <option value="bn">Bengali</option>
+                    <option value="te">Telugu</option>
+                    <option value="ta">Tamil</option>
+                    <option value="mr">Marathi</option>
+                    <option value="gu">Gujarati</option>
+                    <option value="kn">Kannada</option>
+                    <option value="ml">Malayalam</option>
+                    <option value="pa">Punjabi</option>
+                    <option value="ur">Urdu</option>
+                </optgroup>
+                <optgroup label="Asian Languages">
+                    <option value="zh-cn">Chinese (Simplified)</option>
+                    <option value="ja">Japanese</option>
+                    <option value="ko">Korean</option>
+                </optgroup>
+                <optgroup label="European Languages">
+                    <option value="it">Italian</option>
+                    <option value="pt">Portuguese</option>
+                    <option value="ru">Russian</option>
+                </optgroup>
+            </select>
+            <button id="mic-button" class="mic-button" title="Speak to search">
+                <i class="fas fa-microphone"></i>
+            </button>
+            <button id="search-btn" class="btn btn-primary">
+                <i class="fas fa-search"></i> Search
+            </button>
+        </div>
+        
+        <div id="error" class="error-message" style="display: none;"></div>
+        
+        <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <span>Searching...</span>
+        </div>
+        
+        <div id="result" class="result-card" style="display: none;">
+            <h2 id="word-display" class="word-title"></h2>
+            <div id="phonetic" class="phonetic"></div>
+            
+            <div id="translation-container" style="display: none;">
+                <div class="translation-wrapper" style="display: flex; align-items: center; gap: 1rem;">
+                    <p id="translation-display" class="translation"></p>
+                    <button id="translation-listen-btn" class="btn btn-secondary" style="padding: 0.5rem; margin-left: 0.5rem;">
+                        <i class="fas fa-volume-up"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="tabs">
+                <div class="tab active" data-tab="definitions">Definitions</div>
+                <div class="tab" data-tab="examples">Examples</div>
+                <div class="tab" data-tab="synonyms">Synonyms & Antonyms</div>
+            </div>
+            
+            <div id="definitions-tab" class="tab-content active">
+                <div id="definitions-container" class="definitions-container"></div>
+            </div>
+            
+            <div id="examples-tab" class="tab-content">
+                <div id="examples-container"></div>
+            </div>
+            
+            <div id="synonyms-tab" class="tab-content">
+                <div id="synonyms-container" class="synonyms-container">
+                    <h3 class="synonyms-title">Synonyms</h3>
+                    <div id="synonyms-tags" class="tags"></div>
+                </div>
+                
+                <div id="antonyms-container" class="antonyms-container">
+                    <h3 class="antonyms-title">Antonyms</h3>
+                    <div id="antonyms-tags" class="tags"></div>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <button id="listen-btn" class="btn btn-secondary">
+                    <i class="fas fa-volume-up"></i> Listen to Original
+                </button>
+                <button id="copy-btn" class="btn btn-accent">
+                    <i class="fas fa-copy"></i> Copy
+                </button>
+            </div>
+        </div>
+        
+        <footer class="footer">
+            <p>© <span id="current-year"></span> Dictionary Bot | Powered by Free Dictionary API & Google Translate</p>
+            <p>Created with <i class="fas fa-heart" style="color: var(--accent-color);"></i> for language learners worldwide</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current year in footer
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+            
+            // DOM elements
+            const wordInput = document.getElementById('word-input');
+            const languageSelect = document.getElementById('language-select');
+            const micButton = document.getElementById('mic-button');
+            const searchBtn = document.getElementById('search-btn');
+            const errorDiv = document.getElementById('error');
+            const loadingDiv = document.getElementById('loading');
+            const resultDiv = document.getElementById('result');
+            const wordDisplay = document.getElementById('word-display');
+            const phoneticDisplay = document.getElementById('phonetic');
+            const translationContainer = document.getElementById('translation-container');
+            const translationDisplay = document.getElementById('translation-display');
+            const definitionsContainer = document.getElementById('definitions-container');
+            const examplesContainer = document.getElementById('examples-container');
+            const synonymsContainer = document.getElementById('synonyms-tags');
+            const antonymsContainer = document.getElementById('antonyms-tags');
+            const listenBtn = document.getElementById('listen-btn');
+            const copyBtn = document.getElementById('copy-btn');
+            
+            // Tab functionality
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Remove active class from all tabs and contents
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked tab and corresponding content
+                    tab.classList.add('active');
+                    const tabName = tab.getAttribute('data-tab');
+                    document.getElementById(`${tabName}-tab`).classList.add('active');
+                });
+            });
+            
+            // Focus the input on page load
+            wordInput.focus();
+            
+            // Handle search button click
+            searchBtn.addEventListener('click', performSearch);
+            
+            // Handle Enter key press
+            wordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+            
+            // Handle microphone button click
+            let isRecording = false;
+            micButton.addEventListener('click', function() {
+                if (!isRecording) {
+                    startSpeechRecognition();
+                }
+            });
+            
+            // Handle listen button click
+            listenBtn.addEventListener('click', function() {
+                playPronunciation('original');
+            });
+            
+            // Handle translation listen button click
+            document.getElementById('translation-listen-btn').addEventListener('click', function() {
+                playPronunciation('translation');
+            });
+            
+            // Handle copy button click
+            copyBtn.addEventListener('click', function() {
+                const textToCopy = wordDisplay.textContent + 
+                    (phoneticDisplay.textContent ? ' ' + phoneticDisplay.textContent : '') + 
+                    (translationDisplay.textContent ? '\n\nTranslation: ' + translationDisplay.textContent : '');
+                
+                navigator.clipboard.writeText(textToCopy)
+                    .then(() => {
+                        const originalText = copyBtn.innerHTML;
+                        copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                        setTimeout(() => {
+                            copyBtn.innerHTML = originalText;
+                        }, 2000);
+                    })
+                    .catch(err => {
+                        showError('Failed to copy text: ' + err);
+                    });
+            });
+            
+            // Handle clicking on synonym/antonym tags
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('tag')) {
+                    wordInput.value = e.target.textContent;
+                    performSearch();
+                }
+            });
+            
+            // Main search function
+            function performSearch() {
+                const word = wordInput.value.trim();
+                const targetLang = languageSelect.value;
+                
+                if (!word) {
+                    showError('Please enter a word or phrase');
+                    return;
+                }
+                
+                // Clear previous results and errors
+                clearResults();
+                hideError();
+                showLoading();
+                
+                // Make API request
+                fetch('/api/search', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        word: word,
+                        target_lang: targetLang
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    displayResults(data);
+                })
+                .catch(error => {
+                    showError('Error: ' + error.message);
+                })
+                .finally(() => {
+                    hideLoading();
+                });
+            }
+            
+            // Display search results
+            function displayResults(data) {
+                // Display word and phonetics
+                wordDisplay.textContent = data.word;
+                
+                if (data.phonetics && data.phonetics.length > 0) {
+                    phoneticDisplay.textContent = data.phonetics[0].text;
+                    phoneticDisplay.style.display = 'block';
+                } else {
+                    phoneticDisplay.style.display = 'none';
+                }
+                
+                // Display translation if available
+                if (data.translation) {
+                    translationDisplay.textContent = data.translation;
+                    translationContainer.style.display = 'block';
+                    
+                    // Enable or disable translation pronunciation button
+                    const translationListenBtn = document.getElementById('translation-listen-btn');
+                    if (data.translation_pronunciation) {
+                        listenBtn.setAttribute('data-translation-audio', data.translation_pronunciation);
+                        translationListenBtn.disabled = false;
+                    } else {
+                        translationListenBtn.disabled = true;
+                    }
+                } else {
+                    translationContainer.style.display = 'none';
+                }
+                
+                // Display definitions in Google Translate-like format
+                if (data.definitions && data.definitions.length > 0) {
+                    // Group definitions by part of speech
+                    const definitionsByPos = {};
+                    
+                    data.definitions.forEach(def => {
+                        const pos = def.part_of_speech || 'other';
+                        if (!definitionsByPos[pos]) {
+                            definitionsByPos[pos] = [];
+                        }
+                        definitionsByPos[pos].push(def);
+                    });
+                    
+                    // Display definitions grouped by part of speech
+                    for (const [pos, defs] of Object.entries(definitionsByPos)) {
+                        const posContainer = document.createElement('div');
+                        posContainer.className = 'pos-container';
+                        
+                        const posHeader = document.createElement('div');
+                        posHeader.className = 'pos-header';
+                        
+                        const posLabel = document.createElement('span');
+                        posLabel.className = 'part-of-speech';
+                        posLabel.textContent = pos;
+                        posHeader.appendChild(posLabel);
+                        
+                        posContainer.appendChild(posHeader);
+                        
+                        // Show primary definition with expanded details
+                        if (defs.length > 0) {
+                            const mainDefItem = document.createElement('div');
+                            mainDefItem.className = 'definition-item main-definition';
+                            
+                            const mainDefText = document.createElement('p');
+                            mainDefText.className = 'definition-text';
+                            mainDefText.textContent = defs[0].definition;
+                            mainDefItem.appendChild(mainDefText);
+                            
+                            // Add example for main definition if available
+                            if (defs[0].example) {
+                                const mainExample = document.createElement('p');
+                                mainExample.className = 'example';
+                                mainExample.textContent = `"${defs[0].example}"`;
+                                mainDefItem.appendChild(mainExample);
+                            }
+                            
+                            posContainer.appendChild(mainDefItem);
+                            
+                            // Add additional definitions as supplementary explanations
+                            if (defs.length > 1) {
+                                const additionalContainer = document.createElement('div');
+                                additionalContainer.className = 'additional-definitions';
+                                
+                                const additionalHeader = document.createElement('h4');
+                                additionalHeader.className = 'additional-header';
+                                additionalHeader.textContent = 'Additional explanations:';
+                                additionalContainer.appendChild(additionalHeader);
+                                
+                                // Add up to 2 more definitions as additional explanations
+                                const maxAdditional = Math.min(defs.length - 1, 2);
+                                for (let i = 1; i <= maxAdditional; i++) {
+                                    const additionalItem = document.createElement('div');
+                                    additionalItem.className = 'additional-item';
+                                    
+                                    const bulletPoint = document.createElement('span');
+                                    bulletPoint.className = 'bullet-point';
+                                    bulletPoint.textContent = '•';
+                                    additionalItem.appendChild(bulletPoint);
+                                    
+                                    const additionalText = document.createElement('span');
+                                    additionalText.className = 'additional-text';
+                                    additionalText.textContent = defs[i].definition;
+                                    additionalItem.appendChild(additionalText);
+                                    
+                                    additionalContainer.appendChild(additionalItem);
+                                    
+                                    // Add example for additional definition if available
+                                    if (defs[i].example) {
+                                        const additionalExample = document.createElement('p');
+                                        additionalExample.className = 'additional-example';
+                                        additionalExample.textContent = `"${defs[i].example}"`;
+                                        additionalItem.appendChild(additionalExample);
+                                    }
+                                }
+                                
+                                posContainer.appendChild(additionalContainer);
+                            }
+                        }
+                        
+                        definitionsContainer.appendChild(posContainer);
+                    }
+                } else {
+                    const noDefMessage = document.createElement('p');
+                    noDefMessage.textContent = 'No definitions found.';
+                    definitionsContainer.appendChild(noDefMessage);
+                }
+                
+                // Display examples
+                if (data.examples && data.examples.length > 0) {
+                    // Show only up to 3 examples
+                    const exampleCount = Math.min(data.examples.length, 3);
+                    for (let i = 0; i < exampleCount; i++) {
+                        const exampleItem = document.createElement('p');
+                        exampleItem.className = 'example';
+                        exampleItem.textContent = `"${data.examples[i]}"`;
+                        examplesContainer.appendChild(exampleItem);
+                    }
+                } else {
+                    const noExamplesMessage = document.createElement('p');
+                    noExamplesMessage.textContent = 'No examples found.';
+                    examplesContainer.appendChild(noExamplesMessage);
+                }
+                
+                // Display synonyms
+                if (data.synonyms && data.synonyms.length > 0) {
+                    // Show only up to 5 synonyms
+                    const synonymCount = Math.min(data.synonyms.length, 5);
+                    for (let i = 0; i < synonymCount; i++) {
+                        const tag = document.createElement('span');
+                        tag.className = 'tag';
+                        tag.textContent = data.synonyms[i];
+                        synonymsContainer.appendChild(tag);
+                    }
+                } else {
+                    const noSynonymsMessage = document.createElement('p');
+                    noSynonymsMessage.textContent = 'No synonyms found.';
+                    synonymsContainer.appendChild(noSynonymsMessage);
+                }
+                
+                // Display antonyms
+                if (data.antonyms && data.antonyms.length > 0) {
+                    // Show only up to 5 antonyms
+                    const antonymCount = Math.min(data.antonyms.length, 5);
+                    for (let i = 0; i < antonymCount; i++) {
+                        const tag = document.createElement('span');
+                        tag.className = 'tag';
+                        tag.textContent = data.antonyms[i];
+                        antonymsContainer.appendChild(tag);
+                    }
+                } else {
+                    const noAntonymsMessage = document.createElement('p');
+                    noAntonymsMessage.textContent = 'No antonyms found.';
+                    antonymsContainer.appendChild(noAntonymsMessage);
+                }
+                
+                // Store pronunciation data
+                if (data.pronunciation) {
+                    listenBtn.setAttribute('data-audio', data.pronunciation);
+                    listenBtn.disabled = false;
+                } else if (data.audio) {
+                    listenBtn.setAttribute('data-audio-url', data.audio);
+                    listenBtn.disabled = false;
+                } else {
+                    listenBtn.disabled = true;
+                }
+                
+                // Show result
+                resultDiv.style.display = 'block';
+                
+                // Reset to definitions tab
+                tabs[0].click();
+            }
+            
+            // Play pronunciation
+            function playPronunciation(type = 'original') {
+                const base64Audio = listenBtn.getAttribute('data-audio');
+                const audioUrl = listenBtn.getAttribute('data-audio-url');
+                const translationAudio = listenBtn.getAttribute('data-translation-audio');
+                
+                if (type === 'translation' && translationAudio) {
+                    const audio = new Audio(`data:audio/mp3;base64,${translationAudio}`);
+                    audio.play();
+                } else if (base64Audio && type === 'original') {
+                    const audio = new Audio(`data:audio/mp3;base64,${base64Audio}`);
+                    audio.play();
+                } else if (audioUrl && audioUrl !== 'null' && audioUrl !== '' && type === 'original') {
+                    const audio = new Audio(audioUrl);
+                    audio.play();
+                } else {
+                    showError('No pronunciation available');
+                }
+            }
+            
+            // Speech recognition
+            function startSpeechRecognition() {
+                if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                    showError('Speech recognition is not supported in your browser');
+                    return;
+                }
+                
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                const recognition = new SpeechRecognition();
+                
+                // Set language based on selected language
+                const selectedLang = languageSelect.value;
+                if (selectedLang === 'hi') {
+                    recognition.lang = 'hi-IN';
+                } else if (selectedLang === 'bn') {
+                    recognition.lang = 'bn-IN';
+                } else if (selectedLang === 'te') {
+                    recognition.lang = 'te-IN';
+                } else if (selectedLang === 'ta') {
+                    recognition.lang = 'ta-IN';
+                } else if (selectedLang === 'mr') {
+                    recognition.lang = 'mr-IN';
+                } else if (selectedLang === 'gu') {
+                    recognition.lang = 'gu-IN';
+                } else if (selectedLang === 'kn') {
+                    recognition.lang = 'kn-IN';
+                } else if (selectedLang === 'ml') {
+                    recognition.lang = 'ml-IN';
+                } else if (selectedLang === 'pa') {
+                    recognition.lang = 'pa-IN';
+                } else if (selectedLang === 'ur') {
+                    recognition.lang = 'ur-IN';
+                } else {
+                    // Default to English or other languages
+                    recognition.lang = selectedLang + (selectedLang === 'en' ? '-US' : '');
+                }
+                
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                
+                isRecording = true;
+                micButton.classList.add('recording');
+                
+                recognition.start();
+                
+                recognition.onresult = function(event) {
+                    const transcript = event.results[0][0].transcript;
+                    wordInput.value = transcript;
+                    performSearch();
+                };
+                
+                recognition.onerror = function(event) {
+                    showError('Speech recognition error: ' + event.error);
+                    stopRecording();
+                };
+                
+                recognition.onend = function() {
+                    stopRecording();
+                };
+                
+                // Stop recording after 5 seconds
+                setTimeout(() => {
+                    if (isRecording) {
+                        recognition.stop();
+                    }
+                }, 5000);
+            }
+            
+            function stopRecording() {
+                isRecording = false;
+                micButton.classList.remove('recording');
+            }
+            
+            // Helper functions
+            function clearResults() {
+                definitionsContainer.innerHTML = '';
+                examplesContainer.innerHTML = '';
+                synonymsContainer.innerHTML = '';
+                antonymsContainer.innerHTML = '';
+                phoneticDisplay.textContent = '';
+                translationDisplay.textContent = '';
+                listenBtn.removeAttribute('data-audio');
+                listenBtn.removeAttribute('data-audio-url');
+                listenBtn.removeAttribute('data-translation-audio');
+                resultDiv.style.display = 'none';
+            }
+            
+            function showError(message) {
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+            }
+            
+            function hideError() {
+                errorDiv.style.display = 'none';
+            }
+            
+            function showLoading() {
+                loadingDiv.style.display = 'flex';
+            }
+            
+            function hideLoading() {
+                loadingDiv.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html> 

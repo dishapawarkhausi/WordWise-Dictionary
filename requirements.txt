@@ -1,0 +1,8 @@
+flask==2.3.3
+flask-cors==4.0.0
+googletrans==3.1.0a0
+gTTS==2.3.2
+SpeechRecognition==3.10.0
+requests==2.31.0
+better-profanity==0.7.0
+python-dotenv==1.0.0 
