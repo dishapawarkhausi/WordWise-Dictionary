@@ -1,4 +1,4 @@
-# Dictionary Bot
+# WordWise-Dictionary
 
 A comprehensive dictionary application that provides word definitions, translations, pronunciations, and more in multiple languages.
 
@@ -46,8 +46,8 @@ A comprehensive dictionary application that provides word definitions, translati
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/dictionary-bot.git
-   cd dictionary-bot
+   git clone https://github.com/dishapawarkhausi/WordWise-Dictionary.git
+   cd WordWise-Dictionary
    ```
 
 2. Install the required packages:
@@ -112,7 +112,6 @@ dictionary-bot/
 │   ├── index.html         # Main HTML file
 │   ├── styles.css         # CSS styles
 │   ├── script.js          # JavaScript code
-│   └── assets/            # Images and other assets
 ```
 
 ## Contributing
