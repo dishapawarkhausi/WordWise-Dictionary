@@ -7,3 +7,4 @@ requests
 better-profanity
 python-dotenv
 flask_limiter
+gunicorn
