@@ -1,15 +1,15 @@
-# WordWise-Dictionary
+# 📖WordWise-Dictionary
 
 A comprehensive dictionary application that provides word definitions, translations, pronunciations, and more in multiple languages.
 
 ## Features
 
-- **Word Definitions**: Get detailed definitions with part of speech categorization
-- **Translations**: Translate words between multiple languages
-- **Pronunciation**: Listen to the pronunciation of words and their translations
-- **Speech Recognition**: Search for words using your voice
-- **Multiple Language Support**: Support for English and many other languages including Hindi, Spanish, French, etc.
-- **Content Filtering**: Ensures all definitions are appropriate and educational
+- **🔊Word Definitions**: Get detailed definitions with part of speech categorization
+- **🌍Translations**: Translate words between multiple languages
+- **🗣️Pronunciation**: Listen to the pronunciation of words and their translations
+- **🧠🎙️Speech Recognition**: Search for words using your voice
+- **🌐🈯Multiple Language Support**: Support for English and many other languages including Hindi, Spanish, French, etc.
+- **🧼🛡️Content Filtering**: Ensures all definitions are appropriate and educational
 
 ## Supported Languages
 
