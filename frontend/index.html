@@ -73,11 +73,48 @@
                 </div>
                 
             <footer class="app-footer">
-                <p>&copy; 2023 WordWise Dictionary | <a href="#" class="footer-link">About</a> | <a href="#" class="footer-link">Privacy</a></p>
+                <p>&copy; 2025 WordWise Dictionary | <a href="#" class="footer-link">About</a> | <a href="#" class="footer-link">Privacy</a></p>
         </footer>
     </div>
                             </div>
     
     <script src="script.js"></script>
+    <!-- About Modal -->
+<div id="aboutModal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('aboutModal')">&times;</span>
+      <h2>About WordWise</h2>
+      <p>WordWise is a modern online dictionary that helps you translate, define, and pronounce words in multiple languages. Whether you're learning a new language or just curious about word meanings, WordWise gives you fast, accurate, and voice-supported results. We aim to make word learning fun, easy, and accessible to everyone around the world.</p>
+    </div>
+  </div>
+  
+  <!-- Privacy Modal -->
+  <div id="privacyModal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('privacyModal')">&times;</span>
+      <h2>Privacy Policy</h2>
+      <p>WordWise values your privacy. We do not collect or store any personal information without your permission. Your voice inputs (if used) are only processed temporarily and never stored. Search history is saved locally in your browser and can be cleared at any time. We do not share your data with third parties.</p>
+    </div>
+  </div>
+  
 </body>
 </html> 
+
+<script>
+    function openModal(id) {
+        document.getElementById(id).classList.remove('hidden');
+    }
+    
+    function closeModal(id) {
+        document.getElementById(id).classList.add('hidden');
+    }
+    
+    document.querySelectorAll('.footer-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = this.textContent.toLowerCase().includes('about') ? 'aboutModal' : 'privacyModal';
+            openModal(target);
+        });
+    });
+    </script>
+    

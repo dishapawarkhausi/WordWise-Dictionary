@@ -1,5 +1,3 @@
-// New frontend JavaScript file
-
 document.addEventListener('DOMContentLoaded', function() {
     const searchForm = document.getElementById('search-form');
     const wordInput = document.getElementById('word-input');
